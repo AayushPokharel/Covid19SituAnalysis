@@ -167,3 +167,52 @@ class GetAllData(scrapy.Spider):
             SD_item['value'] = StatusValue[0]
 
             yield SD_item 
+
+###################################################################################
+#VVVVVV Yo partVVVVVV garna aayena
+##############################################################################
+class GetRegionalData(scrapy.Spider):
+    name = 'GetRegionalData'
+    start_urls = [
+        'https://covid19.mohp.gov.np/',
+
+    ]
+    def __init__(self):
+        self.driver = webdriver.Chrome(executable_path= os.path.join(AbsoluteProjectRoot,"Driver","chromedriver.exe"), options=chrome_options)
+
+
+    @staticmethod
+    def get_selenium_response(driver,url):
+        driver.get(url)
+        selenium_response_text = driver.page_source.encode('utf-8')
+        testVal = driver.find_element(By.XPATH, RegionPtr)
+        print("Here: "+testVal)
+        return selenium_response_text
+
+    def parse(self,response):
+        R_item = Raw_RegionData()
+        T_item = TestItem()
+        StartDateXpath = "/html/body/div[2]/div[4]/div[2]/div/div/div[1]/div/div/h4/text()[3]"
+        EndDateXpath = "/html/body/div[2]/div[4]/div[2]/div/div/div[1]/div/div/h4/text()[5]"
+        
+        for district in range(1,5):
+            RegionXpath = '/html/body/div[2]/div[4]/div[2]/div/div/div[2]/div[3]/span/b/text()'
+            #RegionPath = "div.ant-card-grid ant-card-grid-hoverable"
+            #DemographicsXpath = "/html/body/div[2]/div[4]/div[2]/div/div/div[2]/div[{}]".format(district)
+
+            RegionPtr = response.xpath(RegionXpath)
+            #RegionDataValue = RegionPtr.css('b::text')
+            
+            #MaleDataValue = response.xpath(DemographicsXpath + "/div[1]/text()[3]")
+            #FemaleDataValue = response.xpath(DemographicsXpath + "/div[2]/text()[3]")
+
+            #R_item['dateStart'] = response.xpath(StartDateXpath).extract()
+            #R_item['dateEnd'] = response.xpath(EndDateXpath).extract()
+            #R_item['region'] = RegionDataValue.extract()
+            #R_item['male'] = MaleDataValue.extract()
+            #R_item['female'] = FemaleDataValue.extract()
+
+            
+            #T_item['value'] = testVal
+
+            yield T_item

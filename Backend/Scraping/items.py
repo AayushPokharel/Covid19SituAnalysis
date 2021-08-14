@@ -17,3 +17,35 @@ class Raw_OverallData(scrapy.Item):
 class Raw_StatusData(scrapy.Item):
     indicator = scrapy.Field()
     value = scrapy.Field()
+
+class Raw_RegionData(scrapy.Item):
+    dateStart = scrapy.Field()
+    dateEnd = scrapy.Field()
+    region = scrapy.Field()
+    Male = scrapy.Field()
+    Female = scrapy.Field()
+
+class Raw_HospitalData(scrapy.Item):
+    HospitalName = scrapy.Field()
+    Location = scrapy.Field()
+    ContactNumber = scrapy.Field()
+    TotalBeds = scrapy.Field()
+    ICUBeds = scrapy.Field()
+    Ventilators = scrapy.Field()
+    IsolationBeds = scrapy.Field()
+
+class Raw_WorldData(scrapy.Item):
+    TotalCases = scrapy.Field()
+    Country = scrapy.Field()
+    TotalCases = scrapy.Field()
+    NewCases = scrapy.Field()
+    TotalDeaths = scrapy.Field()
+    NewDeaths = scrapy.Field()
+    TotalRecovery = scrapy.Field()
+    NewRecovery = scrapy.Field()
+    ActiveCases = scrapy.Field()
+    TotalTests = scrapy.Field()
+    Population = scrapy.Field()
+
+class TestItem(scrapy.Item):
+    value = scrapy.Field()
