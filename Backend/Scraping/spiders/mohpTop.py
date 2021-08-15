@@ -192,16 +192,16 @@ class GetRegionalData(scrapy.Spider):
     def parse(self,response):
         R_item = Raw_RegionData()
         T_item = TestItem()
-        StartDateXpath = "/html/body/div[2]/div[4]/div[2]/div/div/div[1]/div/div/h4/text()[3]"
-        EndDateXpath = "/html/body/div[2]/div[4]/div[2]/div/div/div[1]/div/div/h4/text()[5]"
+        #StartDateXpath = "/html/body/div[2]/div[4]/div[2]/div/div/div[1]/div/div/h4/text()[3]"
+        #EndDateXpath = "/html/body/div[2]/div[4]/div[2]/div/div/div[1]/div/div/h4/text()[5]"
         
         for district in range(1,5):
-            RegionXpath = '/html/body/div[2]/div[4]/div[2]/div/div/div[2]/div[3]/span/b/text()'
+            #RegionXpath = '/html/body/div[2]/div[4]/div[2]/div/div/div[2]/div[3]/span/b/text()'
             #RegionPath = "div.ant-card-grid ant-card-grid-hoverable"
             #DemographicsXpath = "/html/body/div[2]/div[4]/div[2]/div/div/div[2]/div[{}]".format(district)
 
-            RegionPtr = response.xpath(RegionXpath)
-            #RegionDataValue = RegionPtr.css('b::text')
+            RegionPtr = response.css('div.ant-cardgrid ant-card-grid-hoverable')
+            RegionDataValue = RegionPtr.css('span.b::text').extract()
             
             #MaleDataValue = response.xpath(DemographicsXpath + "/div[1]/text()[3]")
             #FemaleDataValue = response.xpath(DemographicsXpath + "/div[2]/text()[3]")
@@ -215,4 +215,35 @@ class GetRegionalData(scrapy.Spider):
             
             #T_item['value'] = testVal
 
-            yield T_item
+#######################################################
+
+class MySpider(scrapy.Spider):
+
+    name = 'Myspider'
+    allowed_domains = ['.gov.np']
+    start_urls = [
+        'https://covid19.mohp.gov.np/'
+    ]
+
+    def parse(self, response):
+
+        headers = {'Referer': 'https://covid19.mohp.gov.np/',
+                   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36',
+                   'Accept': 'application/json, text/plain, */*',
+                   'Accept-Language': 'en-US,en;q=0.9',
+                   'Accept-Encoding': 'gzip, deflate, br',
+                   #'Content-Type': 'application/json; charset=utf-8',
+                   #'X-Requested-With': 'XMLHttpRequest',
+                   #'Content-Length': 246,
+                   #'Connection': 'keep-alive',
+                   }
+
+        yield scrapy.Request(
+            url='https://portal.edcd.gov.np/rest/api/fetch?filter=casesBetween&type=aggregate&sDate=2020-01-01&eDate=2021-08-14&disease=COVID-19',
+            method='GET',
+            headers=headers,
+            callback=self.parse_ajax
+        )
+
+    def parse_ajax(self, response):
+        yield {'data': response.text}

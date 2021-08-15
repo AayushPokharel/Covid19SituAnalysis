@@ -3,6 +3,12 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect, QSize, QTime, QUrl, Qt, QEvent)
 from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
+import csv
+import pandas as pd
+
+import KaggleData
+
+
 
 # from splashScreen import SplashScreen
 from statistics import Canvas
@@ -24,6 +30,39 @@ from qt_material import *
 ## ==> GLOBALS
 counter = 0
 
+############################ CSV #######################################
+
+######### 24hr Nepal ###################################################
+with open(os.path.join("Resources","NepalDailyData.csv"), "r") as f:
+    for row in csv.reader(f, delimiter=','):
+        if row[0] == "New Cases":
+            NewCases_N_24 = row[1]
+        if row[0] == "Recovered":
+           Recovered_N_24 = row[1]
+        if row[0] == "Deaths":
+            Deaths_N_24 = row[1]
+
+######### Overall Nepal ################################################
+with open(os.path.join("Resources","NepalOverallData.csv"), "r") as f:
+    for row in csv.reader(f, delimiter=','):
+        if row[0] == "Total Infected":
+            NewCases_N_ov = row[1]
+        if row[0] == "Recovered":
+           Recovered_N_ov = row[1]
+        if row[0] == "Deaths":
+            Deaths_N_ov = row[1]
+
+######## World ##########################################################
+with open(os.path.join("Resources","WorldDailyData.csv"), "r") as f:
+    WorldData = list(csv.reader(f, delimiter=','))
+    NewCases_W_24 = WorldData[1][1]
+    Recovered_W_24 = WorldData[1][3]
+    Deaths_W_24 = WorldData[1][2]
+
+    NewCases_W_ov = WorldData[1][0]
+    Recovered_W_ov = WorldData[1][5]
+    Deaths_W_ov = WorldData[1][4]
+##########################################################################
 
 # MAIN APPLICATION
 class MainWindow(QMainWindow):
@@ -155,7 +194,24 @@ class MainWindow(QMainWindow):
         ##DATE SELECTED
         self.ui.btn_select.clicked.connect(lambda: UIFunctions.getDate(self))
 
+        ################################### UPDATING DASHBOARD #######################
+        self.ui.label_44.setText(str(NewCases_N_24))
+        self.ui.label_46.setText(str(Recovered_N_24))
+        self.ui.label_48.setText(str(Deaths_N_24))
 
+        self.ui.label_51.setText(str(NewCases_N_ov))
+        self.ui.label_53.setText(str(Recovered_N_ov))
+        self.ui.label_55.setText(str(Deaths_N_ov))
+
+
+        self.ui.label_12.setText(str(NewCases_W_24))
+        self.ui.label_15.setText(str(Recovered_W_24))
+        self.ui.label_17.setText(str(Deaths_W_24))
+
+        self.ui.label_36.setText(str(NewCases_W_ov))
+        self.ui.label_38.setText(str(Recovered_W_ov))
+        self.ui.label_40.setText(str(Deaths_W_ov))
+        #############################################################
 
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
@@ -256,7 +312,7 @@ class SplashScreen(QMainWindow):
         self.ui.label_description.setText("<strong>COVID-19</strong> Situation Analysis Application")
 
         # Change Texts
-        QtCore.QTimer.singleShot(1500, lambda: self.ui.label_description.setText("<strong>LOADING</strong> DATABASE"))
+        QtCore.QTimer.singleShot(1500, lambda: self.ui.label_description.setText("<strong>LOADING</strong> DATA"))
         QtCore.QTimer.singleShot(3000, lambda: self.ui.label_description.setText("<strong>LOADING</strong> USER INTERFACE"))
         
 
@@ -291,6 +347,7 @@ class SplashScreen(QMainWindow):
         counter += 1
 
 if __name__ == "__main__":
+    #KaggleData.ScrapeKaggleData()
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon("icon.ico"))
     window = SplashScreen()

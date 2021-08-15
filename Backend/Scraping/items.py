@@ -47,5 +47,13 @@ class Raw_WorldData(scrapy.Item):
     TotalTests = scrapy.Field()
     Population = scrapy.Field()
 
+class Raw_WorldDailyData(scrapy.Item):
+    NewCases = scrapy.Field()
+    TotalDeaths = scrapy.Field()
+    NewDeaths = scrapy.Field()
+    TotalRecovery = scrapy.Field()
+    NewRecovery = scrapy.Field()
+    ActiveCases = scrapy.Field()
+
 class TestItem(scrapy.Item):
     value = scrapy.Field()

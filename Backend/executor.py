@@ -17,5 +17,4 @@ def done(a_spiderName,a_FileName):
 
 if __name__ == "__main__":
     done(sys.argv[1],sys.argv[2])
-    print()
     pass

@@ -80,7 +80,7 @@ def cleanupRows(a_file,a_rows2keep):
 
 
 def FilterNepal():
-    print("Opening Filter")
+    print("Opening Filter for Nepal")
     f = 0
     outfile = os.path.join(point2.AbsoluteProjectRoot,"Resources","CovidDataNepal.csv")
     with open(file,'r') as fin:
@@ -97,7 +97,7 @@ def FilterNepal():
 
 
 def FilterSingleContinent(a_Continent):
-    print("Opening Filter")
+    print("Opening Filter for "+ a_Continent)
     f = 0
     ofileName = "CovidData" + str(a_Continent) +".csv" 
     outfile = os.path.join(point2.AbsoluteProjectRoot,"Resources",ofileName)
